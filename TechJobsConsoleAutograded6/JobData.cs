@@ -3,8 +3,8 @@ using System.Text;
 
 namespace TechJobsConsoleAutograded6
 {
-	public class JobData
-	{
+    public class JobData
+    {
         static List<Dictionary<string, string>> AllJobs = new List<Dictionary<string, string>>();
         static bool IsDataLoaded = false;
 
@@ -16,7 +16,7 @@ namespace TechJobsConsoleAutograded6
 
         /*
          * Returns a list of all values contained in a given column,
-         * without duplicates. 
+         * without duplicates.
          */
         public static List<string> FindAll(string column)
         {
@@ -47,7 +47,24 @@ namespace TechJobsConsoleAutograded6
             // load data, if not already loaded
             LoadData();
 
-            return null;
+            List<Dictionary<string, string>> jobs = new List<Dictionary<string, string>>();
+            string lowerValue = value.ToLower(); // Convert search term to lower case for case-insensitive comparison
+
+            foreach (Dictionary<string, string> row in AllJobs)
+            {
+                foreach (KeyValuePair<string, string> field in row)
+                {
+                    string aValue = field.Value.ToLower(); // Convert job field value to lower case for case-insensitive comparison
+
+                    if (aValue.Contains(lowerValue))
+                    {
+                        jobs.Add(row);
+                        break; // Break to avoid adding the same job multiple times
+                    }
+                }
+            }
+
+            return jobs;
         }
 
         /**
@@ -63,14 +80,13 @@ namespace TechJobsConsoleAutograded6
             LoadData();
 
             List<Dictionary<string, string>> jobs = new List<Dictionary<string, string>>();
+            string lowerValue = value.ToLower(); // Convert search term to lower case for case-insensitive comparison
 
             foreach (Dictionary<string, string> row in AllJobs)
             {
-                string aValue = row[column];
+                string aValue = row[column].ToLower(); // Convert job field value to lower case for case-insensitive comparison
 
-
-                //TODO: Make search case-insensitive
-                if (aValue.Contains(value))
+                if (aValue.Contains(lowerValue))
                 {
                     jobs.Add(row);
                 }
@@ -161,4 +177,3 @@ namespace TechJobsConsoleAutograded6
         }
     }
 }
-
